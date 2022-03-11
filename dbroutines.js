@@ -30,12 +30,20 @@ const findAll = (db, coll, criteria, projection) =>
     .find(criteria)
     .project(projection)
     .toArray();
-const findUniqueValues = (db, coll, field) => db.collection(coll).distinct(field);
+const updateOne = (db, coll, criteria, projection) =>
+    db.collection(coll).findOneAndUpdate(criteria, {
+        $set: projection
+    }, {
+        rawResult: true
+    });
+const deleteOne = (db, coll, criteria) => db.collection(coll).deleteOne(criteria);
+
 module.exports = {
     getDBInstance,
     addOne,
     deleteAll,
     findOne,
     findAll,
-    findUniqueValues
+    updateOne,
+    deleteOne
 };

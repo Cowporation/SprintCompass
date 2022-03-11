@@ -9,7 +9,9 @@ const taskRoutes = require('./routes/taskRoutes');
 const subtaskRoutes = require('./routes/subtaskRoutes');
 
 const app = express();
-
+// parse application/json
+app.use(express.json()); //Used to parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use('/project', projectRoutes);
 app.use('/user', userRoutes);
 app.use('/list', listRoutes);
