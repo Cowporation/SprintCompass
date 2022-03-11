@@ -2,11 +2,11 @@
 
 ## Project APIs
 
- 1.  Get all projects
- 2. Get project by id
- 3. Post project
- 4. Update a project's name, description/startDate
- 5. Delete a project
+ 1. [Get all projects](#get-all-projects)
+ 2. [Get project by id](#get-project-by-id)
+ 3. [Post project](#post-a-project)
+ 4. [Update a project's name, description/startDate](#update-a-project-by-id)
+ 5. [Delete a project](#delete-a-project-by-id)
 
 ### Get All Projects
 ---
@@ -81,7 +81,7 @@ fetch('https://localhost:3000/project', {
 ### Get project by id
 ---
 
-  Returns json data about all projects
+  Returns json data for a project by id
 
 * **URL**
 
@@ -141,73 +141,11 @@ fetch('https://localhost:3000/project/622aad4cefbf2d55aac06a4f', {
 .then(json => console.log(json));
 .catch(err => console.log(err));
 ```
-### Get project by id
----
 
-  Returns json data about all projects
-
-* **URL**
-
-  /project/:id
-
-* **Method:**
-
-  `GET`
-  
-*  **URL Params**
-
-   **Required:**
- 
-   `id=[string]`
-
-* **Data Params**
-
-  None
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:** ```{
-  "project": {
-    "_id": "622aad4cefbf2d55aac06a4f",
-    "name": "Testproject_one",
-    "description": "This is a test project",
-    "startDate": "2022-03-10",
-    "owner": null,
-    "lists": [],
-    "users": []
-  }
-}```
- 
-* **Error Response:**
-
-  * **Code:** 404 NOT FOUND<br />
-    **Content:** `{
-  "msg": "no project found with id"
-}`
-
-  OR
-
-  * **Code:** 500 SERVER ERROR <br />
-    **Content:** `{
-  "msg": "get project failed - internal server error"
-}`
-
-* **Sample Call:**
-
-
-```javascript
-fetch('https://localhost:3000/project/622aad4cefbf2d55aac06a4f', {
-  method: "GET"
-})
-.then(response => response.json()) 
-.then(json => console.log(json));
-.catch(err => console.log(err));
-```
 ### Post a project
 ---
 
-  Returns json data about all projects
+  Add a new project
 
 * **URL**
 
@@ -267,69 +205,7 @@ fetch('https://localhost:3000/project', {
 .then(json => console.log(json));
 .catch(err => console.log(err));
 ```
-### Get project by id
----
 
-  Returns json data about all projects
-
-* **URL**
-
-  /project/:id
-
-* **Method:**
-
-  `GET`
-  
-*  **URL Params**
-
-   **Required:**
- 
-   `id=[string]`
-
-* **Data Params**
-
-  None
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:** ```{
-  "project": {
-    "_id": "622aad4cefbf2d55aac06a4f",
-    "name": "Testproject_one",
-    "description": "This is a test project",
-    "startDate": "2022-03-10",
-    "owner": null,
-    "lists": [],
-    "users": []
-  }
-}```
- 
-* **Error Response:**
-
-  * **Code:** 404 NOT FOUND<br />
-    **Content:** `{
-  "msg": "no project found with id"
-}`
-
-  OR
-
-  * **Code:** 500 SERVER ERROR <br />
-    **Content:** `{
-  "msg": "get project failed - internal server error"
-}`
-
-* **Sample Call:**
-
-
-```javascript
-fetch('https://localhost:3000/project/622aad4cefbf2d55aac06a4f', {
-  method: "GET"
-})
-.then(response => response.json()) 
-.then(json => console.log(json));
-.catch(err => console.log(err));
-```
 ### Update a project by id
 ---
 
