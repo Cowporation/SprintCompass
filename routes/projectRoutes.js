@@ -104,7 +104,7 @@ projectRouter.put("/", async (req, res) => {
         });
     } catch (err) {
         console.log(err.stack);
-        res.status(500).send("project user failed - internal server error");
+        res.status(500).send("project update failed - internal server error");
     }
 });
 
