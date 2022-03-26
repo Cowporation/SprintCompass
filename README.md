@@ -163,14 +163,33 @@ fetch('https://localhost:3000/project/622aad4cefbf2d55aac06a4f', {
 
 * **Data Params**
 
-  `name=[string], description=[string], startDate=[string]`
+  `name=[string], description=[string], startDate=[string], storyPointHours=[int], stories=[array of story]`
+  `story[portion] = [string], story[priority] = [string], story[storyPoints] = [int]`
 
 * **Success Response:**
 
   * **Code:** 200 <br />
     **Content:** ```{
   "msg": "document added to projects collection",
-  "id": "622ab939efbf2d55aac06a51"
+  "id": "623e7f76c3bdb167df297558",
+  "stories": [
+    {
+      "portion": "I want to make 10000k with this project",
+      "priority": "high",
+      "storyPoints": 4,
+      "estimatedCost": 2600,
+      "projectID": "623e7f76c3bdb167df297558",
+      "_id": "623e7f76c3bdb167df297559"
+    },
+    {
+      "portion": "I want to make 999999k with this project",
+      "priority": "high",
+      "storyPoints": 1,
+      "estimatedCost": 650,
+      "projectID": "623e7f76c3bdb167df297558",
+      "_id": "623e7f76c3bdb167df29755a"
+    }
+  ]
 }```
  
 * **Error Response:**
@@ -193,7 +212,11 @@ fetch('https://localhost:3000/project/622aad4cefbf2d55aac06a4f', {
 let _data = {
   name: "Project test 3", 
   description : "this is another test project",
-  startDate: "2022-03-22"
+  startDate: "2022-03-22",
+  storyPointHours: 5,
+  stories: [
+    {portion : "I want to make 10000k with this project", priority: "high", storyPoints : 5},
+    {portion : "I want to make 999999k with this project", priority: "high", storyPoints : 8}]
 }
 
 fetch('https://localhost:3000/project', {

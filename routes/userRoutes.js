@@ -5,7 +5,7 @@ const {
     usersCollection
 } = require("../config");
 // define a default route
-userRouter.get('/', (req, res) => {
+userRouter.get('/', async (req, res) => {
     try {
         let db = await dbRtns.getDBInstance();
         let users = await dbRtns.findAll(db, usersCollection);
@@ -18,7 +18,7 @@ userRouter.get('/', (req, res) => {
     }
 });
 // define a get route with a name parameter
-userRouter.get('/:id', (req, res) => {
+userRouter.get('/:id', async (req, res) => {
     try {
         let db = await dbRtns.getDBInstance();
         let o_id = new ObjectId(req.params.id);

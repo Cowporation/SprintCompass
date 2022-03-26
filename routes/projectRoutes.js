@@ -3,8 +3,27 @@ const projectRouter = express.Router();
 const dbRtns = require("../dbroutines");
 const ObjectId = require('mongodb').ObjectId;
 const {
-    projectsCollection
+    projectsCollection,
+    tasksCollection,
 } = require("../config");
+
+const validateStory = (story, res) =>{
+    if (!story.portion) {
+        return res.status(405).send({
+            msg: `error: a user story needs to contain a portion field (e.g. I want to...)`
+        });
+    }
+    else if (!story.priority) {
+        return res.status(405).send({
+            msg: `error: a user story needs to contain a priority field`
+        });
+    }
+    else if (!story.storyPoints) {
+        return res.status(405).send({
+            msg: `error: a user story needs to contain an storyPoints field`
+        });
+    }
+}
 // define a default route to retrieve all users
 projectRouter.get("/", async (req, res) => {
 
@@ -46,23 +65,44 @@ projectRouter.post("/", async (req, res) => {
     try {
         let db = await dbRtns.getDBInstance();
         console.log(req.body.name);
+        if (!req.body.name || !req.body.description || !req.body.startDate
+            || !req.body.storyPointHours) {
+            return res.status(405).send({
+                msg: `server received empty or invalid project data`
+            });
+        }
+        let stories = req.body.stories;
+        let totalPoints = 0;
+        let totalCost = 0;
+        for(let i = 0; i < stories.length; ++i){
+            validateStory(stories[i], res);
+            stories[i].estimatedCost = stories[i].storyPoints * req.body.storyPointHours * 65;
+            totalPoints += stories[i].storyPoints;
+            totalCost += stories[i].estimatedCost;
+        }
+
         let newProject = {
             name: req.body.name,
             description: req.body.description,
             startDate: req.body.startDate,
             owner: null,
-            lists: [],
-            users: []
+            users: [],
+            totalPoints: totalPoints,
+            totalCost: totalCost,
         }
-        if (!newProject.name || !newProject.description || !newProject.startDate) {
-            return res.status(405).send({
-                msg: `server received empty or invalid project data`
-            });
-        }
+
         let dbresponse = await dbRtns.addOne(db, projectsCollection, newProject);
+        for(let i = 0; i < stories.length; ++i){
+            stories[i].projectID = dbresponse.insertedId;
+            let storyID = await dbRtns.addOne(db, tasksCollection, stories[i]);
+            stories[i]._id = storyID.insertedId;
+        }
+
         res.status(200).send({
             msg: `document added to projects collection`,
-            id: dbresponse.insertedId
+            id: dbresponse.insertedId,
+            stories: stories,
+
         });
     } catch (err) {
         console.log(err.stack);
