@@ -85,6 +85,7 @@ projectRouter.post("/", async (req, res) => {
             name: req.body.name,
             description: req.body.description,
             startDate: req.body.startDate,
+            storyPointHours: req.body.storyPointHours,
             owner: null,
             users: [],
             totalPoints: totalPoints,
