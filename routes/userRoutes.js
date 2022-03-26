@@ -1,5 +1,6 @@
 const express = require('express');
 const userRouter = express.Router();
+const dbRtns = require("../dbroutines");
 const ObjectId = require('mongodb').ObjectId;
 const {
     usersCollection
@@ -43,7 +44,6 @@ userRouter.post("/", async (req, res) => {
 
     try {
         let db = await dbRtns.getDBInstance();
-        console.log(req.body.name);
         let newUser = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
@@ -62,7 +62,7 @@ userRouter.post("/", async (req, res) => {
         });
     } catch (err) {
         console.log(err.stack);
-        res.status(500).send("add new user failed - internal server error");
+        res.status(500).send({msg: "add new user failed - internal server error"});
     }
 });
 module.exports = userRouter;
