@@ -22,7 +22,7 @@ const getDBInstance = async () => {
     }
     return db;
 };
-const deleteAll = (db, coll) => db.collection(coll).deleteMany({});
+const deleteAll = (db, coll, criteria) => db.collection(coll).deleteMany(criteria);
 const findOne = (db, coll, criteria) => db.collection(coll).findOne(criteria);
 const findAll = (db, coll, criteria, projection) =>
     db

@@ -210,6 +210,7 @@ projectRouter.delete("/:id", async (req, res) => {
     });
     if (queriedProject) {
       await dbRtns.deleteOne(db, projectsCollection, { _id: o_id });
+      await dbRtns,dbRtns.deleteAll(db, tasksCollection, {projectID: o_id})
       res.status(200).send({
         msg: `project ${queriedProject.name} with id ${req.params.id} is deleted`,
       });
