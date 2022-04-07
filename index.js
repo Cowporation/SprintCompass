@@ -8,6 +8,7 @@ const userRoutes = require('./routes/userRoutes');
 const listRoutes = require('./routes/listRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const subtaskRoutes = require('./routes/subtaskRoutes');
+const sprintRouter = require('./routes/sprintRoutes');
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,7 @@ app.use('/user', userRoutes);
 app.use('/list', listRoutes);
 app.use('/task', taskRoutes);
 app.use('/subtask', subtaskRoutes);
+app.use('/sprint', sprintRouter);
 app.listen(port, () => {
     console.log(`listening on port ${port}`);
    });
