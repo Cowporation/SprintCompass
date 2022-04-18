@@ -75,7 +75,7 @@ projectRouter.post("/", async (req, res) => {
       validateStory(stories[i], res);
       stories[i].estimatedCost =
         stories[i].storyPoints * req.body.storyPointHours * 65;
-      totalPoints += stories[i].storyPoints;
+      totalPoints += parseInt(stories[i].storyPoints);
       totalCost += stories[i].estimatedCost;
     }
 
