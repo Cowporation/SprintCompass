@@ -200,6 +200,48 @@ projectRouter.put("/user", async (req, res) => {
     res.status(500).send("project update failed - internal server error");
   }
 });
+projectRouter.delete("/user", async (req, res) => {
+  try {
+    let db = await dbRtns.getDBInstance();
+    if (!req.body.projectId || !req.body.userId) {
+      return res.status(405).send({
+        msg: `server received empty or invalid body data`,
+      });
+    }
+    let project_o_id = new ObjectId(req.body.projectId);
+    let found = await dbRtns.findOne(db, projectsCollection, {
+      _id: project_o_id,
+    });
+    if (!found) {
+      return res.status(404).send({
+        msg: `project with ${req.body.projectId} does not exist`,
+      });
+    }
+    found.users = found.users.filter(user => user != req.body.userId);
+    let updateResults = await dbRtns.updateOne(
+      db,
+      projectsCollection,
+      {
+        _id: project_o_id,
+      },
+      {
+        users: found.users,
+      }
+    );
+    let msg;
+    updateResults.lastErrorObject.updatedExisting
+      ? (msg = `project ${updateResults.value.name} was updated`)
+      : (msg = `project was not updated`);
+
+    res.status(200).send({
+      msg: msg,
+    });
+  } catch (err) {
+    console.log(err.stack);
+    res.status(500).send("project update failed - internal server error");
+  }
+});
+
 
 projectRouter.delete("/:id", async (req, res) => {
   try {
