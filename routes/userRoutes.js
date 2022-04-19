@@ -65,4 +65,26 @@ userRouter.post("/", async (req, res) => {
         res.status(500).send({msg: "add new user failed - internal server error"});
     }
 });
+userRouter.delete("/:id", async (req, res) => {
+    try {
+      let db = await dbRtns.getDBInstance();
+      let o_id = new ObjectId(req.params.id);
+      let queriedUser = await dbRtns.findOne(db, usersCollection, {
+        _id: o_id,
+      });
+      if (queriedUser) {
+        await dbRtns.deleteOne(db, usersCollection, { _id: o_id });
+        res.status(200).send({
+          msg: `user ${queriedUser.firstName} with id ${req.params.id} is deleted`,
+        });
+      } else {
+        res.status(404).send({
+          msg: `user with ${req.params.id} does not exist`,
+        });
+      }
+    } catch (err) {
+      console.log(err.stack);
+      res.status(500).send("delete project failed - internal server error");
+    }
+  });
 module.exports = userRouter;
