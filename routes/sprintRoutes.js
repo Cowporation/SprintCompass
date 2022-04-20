@@ -61,7 +61,7 @@ sprintRouter.post("/", async (req, res) => {
         }
         let dbresponse = await dbRtns.addOne(db, sprintsCollection, newSprint);
         res.status(200).send({
-            msg: `new sprint added to sprints collection`,
+            msg: `${req.body.name} added`,
             id: dbresponse.insertedId
         });
     } catch (err) {
@@ -71,4 +71,25 @@ sprintRouter.post("/", async (req, res) => {
         });
     }
 });
+sprintRouter.delete("/:name", async (req, res) => {
+    try {
+      let db = await dbRtns.getDBInstance();
+      let queriedSprint = await dbRtns.findOne(db, sprintsCollection, {
+        name: req.params.name,
+      });
+      if (queriedSprint) {
+        await dbRtns.deleteOne(db, sprintsCollection, { name: req.params.name });
+        res.status(200).send({
+          msg: `${queriedSprint.name} is deleted`,
+        });
+      } else {
+        res.status(404).send({
+          msg: `sprint ${queriedSprint.name} does not exist`,
+        });
+      }
+    } catch (err) {
+      console.log(err.stack);
+      res.status(500).send({msg: "delete sprint failed - internal server error"});
+    }
+  });
 module.exports = sprintRouter;
